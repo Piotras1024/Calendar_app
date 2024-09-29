@@ -5,16 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalendarz</title>
 
-    <!-- FullCalendar CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
-     <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+
 
 
     <style>
         #calendar {
             max-width: 900px;
             margin: 0 auto;
+        }
+
+         /* Zmieniamy styl cyfr dni miesiąca (1, 2, 3, ...) */
+        .fc-daygrid-day-number {
+            color: black;         /* Zmieniamy kolor cyfr na niebieski */
+            font-size: 18px;     /* Zmieniamy rozmiar tekstu cyfr */
+            text-decoration: none;  /* Usuwamy podkreślenie */
+        }
+
+
+                .fc-daygrid-event {
+            color: darkred !important;  /* Zmienia kolor tekstu wydarzenia na czerwony */
+            text-decoration: none !important;  /* Usuwa podkreślenie */
+        }
+
+        .fc-daygrid-event:hover {
+            color: black !important;  /* Zmienia kolor tekstu podczas najechania myszką */
+            text-decoration: none !important;  /* Utrzymuje brak podkreślenia podczas najechania myszką */
         }
 
 
@@ -34,7 +54,7 @@
 </head>
 <body>
 
-    <h1>Kalendarz Wydarzeń</h1>
+    <h1 style="text-align: center;">Kalendarz  Wydarzeń</h1><br>
     <div id="calendar"></div>
 
     <!-- Modal Bootstrap -->
@@ -129,7 +149,6 @@
                     eventModal.show();
 
 
-                    // alert('Wydarzenie: ' + info.event.title + '.\nOpis: ' + info.event.extendedProps.description + '\nCzas trwania: ' + info.event.extendedProps.duration + durationText);
                 }
             });
 
