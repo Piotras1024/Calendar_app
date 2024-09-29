@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalendarz</title>
+
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+
+        .fc-daygrid-event {
+            display: flex;
+            align-items: flex-start; /* Ustawia tekst od góry */
+            text-align: center; /* Wyrównanie tekstu do lewej */
+            white-space: normal; /* Zawijanie tekstu */
+            word-wrap: break-word; /* Dzieli długie słowa */
+            overflow-wrap: break-word; /* Dodatkowe wsparcie dla przeglądarek */
+            line-height: 1.2; /* Zmniejszenie odstępów między liniami */
+        }
+
+    </style>
+</head>
+<body>
+
+    <h1>Kalendarz Wydarzeń</h1>
+    <div id="calendar"></div>
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',  // Wyświetla kalendarz w widoku miesięcznym
+                locale: 'pl',  // Język polski
+                events: '/calendar/events-json/',  // URL widoku Django, który zwraca dane w formacie JSON
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+
+                eventContent: function(arg) {
+                    // Pobranie pełnego tytułu wydarzenia
+                    let fullTitle = arg.event.title;
+
+
+                    // Wyciągnięcie godziny rozpoczęcia (tylko czas, bez daty)
+                    let start_time = arg.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                    // Rozdzielenie tytułu na słowa
+                    let words = fullTitle.split(" ");
+
+                    // Jeśli tytuł ma więcej niż 4 słowa, skróć go
+                    let shortTitle = words.slice(0, 2).join(" ");
+                    if (words.length > 2) {
+                        shortTitle += " ... \n";
+                    }
+
+                    return { html: start_time + '<br>' + shortTitle + '</b>' };
+                },
+
+                eventTimeFormat: { // Zmieniamy format wyświetlania czasu wydarzenia
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    meridiem: false // Bez AM/PM, aby wyświetlić czas w formacie 24-godzinnym
+                },
+
+
+                eventClick: function(info) {
+                    var duration = info.event.extendedProps.duration;
+                    var durationText;
+
+                    if (duration === 1) {
+                        durationText = ' godzina.';
+                    } else if (duration > 1 && duration < 5) {
+                        durationText = ' godziny.';
+                    } else if (duration < 1) {
+                        durationText = ' godziny.';
+                    } else {
+                        durationText = ' godzin';
+                    }
+
+
+                    alert('Wydarzenie: ' + info.event.title + '.\nOpis: ' + info.event.extendedProps.description + '\nCzas trwania: ' + info.event.extendedProps.duration + durationText);
+                }
+            });
+
+            calendar.render();
+        });
+    </script>
+
+</body>
+</html>
